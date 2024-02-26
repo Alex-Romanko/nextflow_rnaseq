@@ -23,5 +23,5 @@ mv nextflow ~/bin
 
 # Run the pipeline
 ```
-sudo nextflow run main.nf -reads /path/to/reads/ -transcriptome_file /path/to/GenCode/GRCh38.p14.genome.fa -gtf_file /path/to/GenCode/gencode.v44.annotation.gtf 
+sudo nextflow run main.nf --reads /path/to/reads/ --transcriptome_file /path/to/GenCode/GRCh38.p14.genome.fa --gtf_file /path/to/GenCode/gencode.v44.annotation.gtf
 ```
