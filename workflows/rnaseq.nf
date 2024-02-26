@@ -12,7 +12,11 @@ include { FASTQC } from '../modules/local/fastqc'
 include { TRIMGALORE } from '../modules/local/trimgalore'
 include { STAR_GENOMEGENERATE } from '../modules/local/star_genome'
 include { STAR_ALIGN } from '../modules/local/star_align'
+
+// include { SAMTOOLS_SORT } from '../modules/local/...'
+
 include { SAMTOOLS_INDEX } from '../modules/local/samtools_index'
+// include { SAMTOOLS_INDEX as SAMTOOLS_INDEX_RSEM } from '../modules/local/samtools_index'
 include { RSEM_PREPAREREFERENCE } from '../modules/local/rsem_preparereference'
 include { RSEM_CALCULATEEXPRESSION } from '../modules/local/rsem_calculateexpression'
 
@@ -102,6 +106,11 @@ workflow RNASEQ {
 
     RSEM_CALCULATEEXPRESSION ( RSEM_PREPAREREFERENCE.out.index.first(), STAR_ALIGN.out.bam_transcript )
 
+    // TODO: add samtools index for transcriptome alignments
+    // SAMTOOLS_INDEX_RSEM ( RSEM_CALCULATEEXPRESSION.out.bam_transcript )
+    // samtools NO_COOR reads not in a single block at the end
+
+    // TODO: add multiqc
 }
 
 
