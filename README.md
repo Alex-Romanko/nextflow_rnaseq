@@ -8,3 +8,7 @@ The pipeline uses docker container system
 Installation guide of docker on ubuntu: https://docs.docker.com/engine/install/ubuntu/
 
 Before beginning user shold build the container for the pipeline
+```
+cd ./docker/RNAseq
+sudo ./build_docker.sh
+```
