@@ -13,4 +13,15 @@ cd ./docker/RNAseq
 sudo ./build_docker.sh
 ```
 # Install Nextflow
-https://www.nextflow.io/docs/latest/getstarted.html
+There are might be some issues with dependencies installation if only bare nextflow been installed. So there might be preferable to install full destribution from releases https://github.com/nextflow-io/nextflow/releases
+```
+wget -O nextflow https://github.com/nextflow-io/nextflow/releases/download/v23.10.1/nextflow-23.10.1-all
+chmode +x nextflow
+mv nextflow ~/bin
+```
+
+
+# Run the pipeline
+```
+sudo nextflow run main.nf -reads /path/to/reads/ -transcriptome_file /path/to/GenCode/GRCh38.p14.genome.fa -gtf_file /path/to/GenCode/gencode.v44.annotation.gtf 
+```
