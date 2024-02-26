@@ -12,3 +12,5 @@ Before beginning user shold build the container for the pipeline
 cd ./docker/RNAseq
 sudo ./build_docker.sh
 ```
+# Install Nextflow
+https://www.nextflow.io/docs/latest/getstarted.html
