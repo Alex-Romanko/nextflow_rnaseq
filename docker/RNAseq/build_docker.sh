@@ -4,5 +4,5 @@ set -ev
 
 VERSION=`cat VERSION.txt`
 
-docker buildx build -t alex-romanko/rnaseq:${VERSION} .
-docker buildx build -t alex-romanko/rnaseq:latest .
+docker buildx build -t alexromanko/rnaseq:${VERSION} .
+docker buildx build -t alexromanko/rnaseq:latest .
