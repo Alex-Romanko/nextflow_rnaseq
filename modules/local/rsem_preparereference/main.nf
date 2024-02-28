@@ -1,10 +1,9 @@
 process RSEM_PREPAREREFERENCE {
     publishDir params.outdir + "/RSEM_reference", mode:'copy'
     storeDir "$projectDir/data/RSEM_reference"
-
-    maxForks 1
+    label 'process_high'
+    // maxForks 1
     tag "$fasta"
-    // label 'process_high'
 
     // conda "bioconda::rsem=1.3.3 bioconda::star=2.7.10a"
     // container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
