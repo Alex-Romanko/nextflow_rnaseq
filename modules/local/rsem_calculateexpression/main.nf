@@ -52,8 +52,9 @@ process RSEM_CALCULATEEXPRESSION {
     //     $sample_id
 
 
-
-
+    // flag
+    // --temporary-folder ./tmp/
+    // results in ./tpm//sampleID when comand is running
     """
     INDEX=`find -L ./ -name "*.grp" | sed 's/\\.grp\$//'`
     rsem-calculate-expression \\
