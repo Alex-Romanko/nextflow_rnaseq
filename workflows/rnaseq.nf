@@ -110,9 +110,9 @@ workflow RNASEQ {
 
     RSEM_CALCULATEEXPRESSION ( RSEM_PREPAREREFERENCE.out.index.first(), STAR_ALIGN.out.bam_transcript )
 
-    SAMTOOLS_SORT ( RSEM_CALCULATEEXPRESSION.out.bam_transcript )
+    // SAMTOOLS_SORT ( RSEM_CALCULATEEXPRESSION.out.bam_transcript )
 
-    SAMTOOLS_INDEX_RSEM ( SAMTOOLS_SORT.out.bam )
+    // SAMTOOLS_INDEX_RSEM ( SAMTOOLS_SORT.out.bam )
 
     // TODO: add samtools index for transcriptome alignments
     // samtools NO_COOR reads not in a single block at the end
