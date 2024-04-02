@@ -24,6 +24,7 @@ include { RSEM_PREPAREREFERENCE } from '../modules/local/rsem_preparereference'
 
 include { RSEM_CALCULATEEXPRESSION } from '../modules/local/rsem_calculateexpression'
 
+include { RSEM_MERGE_EXPRESSIONS } from '../modules/local/rsem_merge_expressions'
 //
 // SUBWORKFLOW: Consisting of a mix of local and nf-core/modules
 //
@@ -109,6 +110,27 @@ workflow RNASEQ {
     SAMTOOLS_INDEX ( STAR_ALIGN.out.bam_sorted )
 
     RSEM_CALCULATEEXPRESSION ( RSEM_PREPAREREFERENCE.out.index.first(), STAR_ALIGN.out.bam_transcript )
+
+
+ RSEM_CALCULATEEXPRESSION
+	.out
+	.counts_gene
+	.map{
+	    sapmle, file -> file
+	}
+	.collect(flat: true, sort: true)
+	.set{ genes_ch }
+
+ RSEM_CALCULATEEXPRESSION
+	.out
+	.counts_transcript
+	.map{
+	    sapmle, file -> file
+	}
+	.collect(flat: true, sort: true)
+	.set{ isoforms_ch }
+
+    RSEM_MERGE_EXPRESSIONS (genes_ch, isoforms_ch)
 
     // SAMTOOLS_SORT ( RSEM_CALCULATEEXPRESSION.out.bam_transcript )
 
