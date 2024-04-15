@@ -39,8 +39,7 @@ process RSEM_CALCULATEEXPRESSION {
     INDEX=`find -L ./ -name "*.grp" | sed 's/\\.grp\$//'`
     rsem-calculate-expression \\
     --num-threads 8 \\
-    --output-genome-bam \\
-    --sort-bam-by-coordinate \\
+    --no-bam-output \\
     --temporary-folder ./tmp/ \\
     --strandedness none \\
     --alignments --paired-end $bam \\
