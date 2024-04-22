@@ -1,6 +1,6 @@
 process RSEM_PREPAREREFERENCE {
-    publishDir params.outdir + "/RSEM_reference", mode:'copy'
     storeDir "$projectDir/data/RSEM_reference"
+    // publishDir params.outdir + "/RSEM_reference", mode:'copy'
     label 'process_high'
     // maxForks 1
     tag "$fasta"
