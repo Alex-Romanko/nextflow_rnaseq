@@ -1,4 +1,6 @@
 .nextflow*
+nextflow_work_tmp/
+nextflow_work/
 work/
 data/
 test_data/
@@ -10,4 +12,3 @@ testing*
 report*
 timeline*
 trace*
-

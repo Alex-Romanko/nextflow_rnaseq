@@ -17,23 +17,36 @@ nextflow.enable.dsl = 2
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 */
 
-params.fastq_dir = "$projectDir/data/ns550_0097/sarc_rna/"
+params.fastq_dir = null
 
 // params.reads = "$projectDir/data/ns550_0104/race5/*R{1,2}*fastq.gz"
-params.transcriptome_file = "$projectDir/../DBs/GenCode/GRCh38.p14.genome.fa"
-params.gtf_file = "$projectDir/../DBs/GenCode/gencode.v44.annotation.gtf"
+params.transcriptome_file = null
+params.gtf_file = null
 
-params.multiqc = "$projectDir/multiqc"
-params.outdir = "$projectDir/results"
+
+params.multiqc = null
+params.outdir = null
+
 
 log.info """\
     R N A S E Q - N F   P I P E L I N E
     ===================================
     transcriptome: ${params.transcriptome_file}
+    gtf          : ${params.gtf_file}
+
+    project home : ${workflow.projectDir}
+    working dir  : ${workflow.workDir}
+
     reads        : ${params.fastq_dir}
     outdir       : ${params.outdir}
+    multiqc      : ${params.multiqc}
     """
     .stripIndent(true)
+
+
+
+
+
 
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
