@@ -34,6 +34,7 @@ log.info """\
     transcriptome: ${params.transcriptome_file}
     gtf          : ${params.gtf_file}
 
+    profile      : ${workflow.profile}
     project home : ${workflow.projectDir}
     working dir  : ${workflow.workDir}
 
