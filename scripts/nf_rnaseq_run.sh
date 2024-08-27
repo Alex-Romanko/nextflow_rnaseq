@@ -52,6 +52,7 @@ function run_nextflow {
         -work-dir "$WORKDIR" \
 	-profile "$PROFILE" \
         -resume \
+	-ansi-log false \
         --outdir "$RESULTS" \
 	--multiqc "$MULTIQC" \
 	--fastq_dir "$FASTQ" \
