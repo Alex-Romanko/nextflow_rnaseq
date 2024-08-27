@@ -1,5 +1,5 @@
 process STAR_ALIGN {
-    tag "$sample_id"
+    tag "STAR_ALIGN on $sample_id"
     // maxForks 1
     label 'process_high'
     publishDir params.outdir, mode:'copy'
