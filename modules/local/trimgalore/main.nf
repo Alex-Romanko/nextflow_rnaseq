@@ -1,6 +1,6 @@
 process TRIMGALORE {
     tag "TRIMGALORE on $sample_id"
-    label 'process_high'
+    label 'process_medium'
     publishDir params.outdir + "/trim_galore_logs", mode:'copy'
 
     input:
@@ -22,7 +22,7 @@ process TRIMGALORE {
     def cores = 1
     if (task.cpus) {
         cores = (task.cpus as int) - 4
-        if (cores < 1) cores = 1
+        if (cores < 8) cores = 1
         if (cores > 8) cores = 8
     }
 

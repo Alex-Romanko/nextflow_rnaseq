@@ -35,7 +35,7 @@ process STAR_ALIGN {
     --readFilesCommand zcat \\
     --genomeDir $index \\
     --readFilesIn ${reads[0]} ${reads[1]} \\
-    --runThreadN 8 \\
+    --runThreadN $task.cpus \\
     --outFileNamePrefix $sample_id. \\
     --outSAMtype BAM SortedByCoordinate \\
     --quantMode TranscriptomeSAM GeneCounts \\

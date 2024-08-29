@@ -2,6 +2,8 @@ process MERGE_FQ {
     publishDir params.outdir + "/merged_fastq", mode:'copy'
     tag "MERGE_FQ on $sample"
 
+    label 'process_low'
+
     input:
     tuple val(sample), path(R1), path(R2)
     output:

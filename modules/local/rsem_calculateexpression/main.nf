@@ -38,7 +38,7 @@ process RSEM_CALCULATEEXPRESSION {
     """
     INDEX=`find -L ./ -name "*.grp" | sed 's/\\.grp\$//'`
     rsem-calculate-expression \\
-    --num-threads 8 \\
+    --num-threads $task.cpus \\
     --no-bam-output \\
     --temporary-folder ./tmp/ \\
     --strandedness none \\
