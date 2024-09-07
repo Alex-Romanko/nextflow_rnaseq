@@ -1,6 +1,6 @@
 process RSEM_CALCULATEEXPRESSION {
     label 'process_high'
-    tag "$sample_id"
+    tag "RSEM_expr on $sample_id"
     publishDir params.outdir + "/rsem_expressions", mode:'copy'
 
     // label 'process_high'

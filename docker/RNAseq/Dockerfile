@@ -172,6 +172,28 @@ RUN pip3 install tables numpy pandas scipy pyarrow matplotlib seaborn
 # numpy dependencies:
 RUN pip3 install pyBigWig
 
+# UMI-TOOLS
+RUN pip3 install umi_tools
+
+# SeqKit
+ENV seqkit_version=2.8.2
+RUN cd /opt && \
+    seqkit_url="https://github.com/shenwei356/seqkit/releases/download/v${seqkit_version}/seqkit_linux_amd64.tar.gz" && \
+    wget --no-check-certificate ${seqkit_url} && \
+    tar -zxvf seqkit*.tar.gz && \
+    mv seqkit /usr/local/bin/ && \
+    rm seqkit*.tar.gz && \
+    cd /usr/local/bin/ && \
+    chmod 775 seqkit
+
+ENV fastp_version=0.23.4
+RUN cd /opt && \
+    fastp_url="http://opengene.org/fastp/fastp.${fastp_version}" && \
+    wget --no-check-certificate ${fastp_url} && \
+    mv fastp.${fastp_version} /usr/local/bin/fastp && \
+    chmod 775 /usr/local/bin/fastp
+
+
 # # bamsync ## from original pipeline
 # COPY bamsync /opt/bamsync
 # RUN cd /opt/bamsync && make

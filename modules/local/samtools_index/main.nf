@@ -4,7 +4,7 @@ process SAMTOOLS_INDEX {
     publishDir params.outdir, mode:'copy'
 
     input:
-    tuple val(sample_id), path(input)
+    tuple val(sample_id), path(bam)
 
     output:
     tuple val(sample_id), path("*.bai") , optional:true, emit: bai
@@ -17,8 +17,8 @@ process SAMTOOLS_INDEX {
     """
     samtools \\
         index \\
-        -@ 4 \\
-        ${input} ${input}.bai
+        -@ $task.cpus \\
+        ${bam} ${bam}.bai
 
     """
 

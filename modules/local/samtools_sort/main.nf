@@ -2,7 +2,6 @@ process SAMTOOLS_SORT {
     publishDir params.outdir, mode:'copy'
     tag "$sample_id"
     label 'process_medium'
-    cpus 1
 
     input:
     tuple val(sample_id), path(bam)

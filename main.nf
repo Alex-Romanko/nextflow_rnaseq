@@ -23,9 +23,13 @@ params.fastq_dir = null
 params.transcriptome_file = null
 params.gtf_file = null
 
+params.trim_x = true
+params.rsem = true
 
 params.multiqc = null
 params.outdir = null
+params.UMI = false
+params.val_get_dedup_stats = false
 
 
 log.info """\
@@ -40,6 +44,7 @@ log.info """\
 
     reads        : ${params.fastq_dir}
     outdir       : ${params.outdir}
+    UMI          : ${params.UMI}
     multiqc      : ${params.multiqc}
     """
     .stripIndent(true)

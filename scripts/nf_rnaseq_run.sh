@@ -9,13 +9,20 @@ set -euo pipefail
 ## example:
 ## https://www.baeldung.com/linux/use-command-line-arguments-in-bash-script
 ## https://stackoverflow.com/questions/30420354/bash-optional-argument-required-but-not-passed-for-use-in-getopts
-while getopts p: flag
+while getopts p:u: flag
 do
     case "${flag}" in
         p)
 	    profile=${OPTARG}
 	    ;; # optional parametr for executor selection
-
+	u)
+	    umi=${OPTARG}
+	    if ! [[ "$umi" = "true" || "$umi" = "false" ]]; then
+		echo "Invalid value for UMI flag: ${umi}"
+		echo "Accepted values: true/false."
+		exit 1
+	    fi
+	   ;;
 	\?)
 	    echo "$0: unknown option -$OPTARG" >&2;
 	    exit 1
@@ -47,12 +54,16 @@ function run_nextflow {
     PROFILE="docker" # set the default profile to docker if no arguments are present
     PROFILE="${profile:-$PROFILE}"
 
+    UMI="false"
+    UMI="${umi:-$UMI}"
+
     # Run Nextflow
     nextflow run "$SCRIPT" \
         -work-dir "$WORKDIR" \
 	-profile "$PROFILE" \
         -resume \
 	-ansi-log true \
+	--UMI "$UMI" \
         --outdir "$RESULTS" \
 	--multiqc "$MULTIQC" \
 	--fastq_dir "$FASTQ" \
