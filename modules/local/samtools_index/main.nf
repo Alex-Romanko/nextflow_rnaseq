@@ -1,15 +1,15 @@
 process SAMTOOLS_INDEX {
-    tag "SAMTOOLS_INDEX on $sample_id"
+    tag "SAMTOOLS_INDEX on $meta.id"
     label 'process_low'
     publishDir params.outdir, mode:'copy'
 
     input:
-    tuple val(sample_id), path(bam)
+    tuple val(meta), path(bam)
 
     output:
-    tuple val(sample_id), path("*.bai") , optional:true, emit: bai
-    // tuple val(sample_id), path("*.csi") , optional:true, emit: csi
-    // tuple val(sample_id), path("*.crai"), optional:true, emit: crai
+    tuple val(meta), path("*.bai") , optional:true, emit: bai
+    // tuple val(meta), path("*.csi") , optional:true, emit: csi
+    // tuple val(meta), path("*.crai"), optional:true, emit: crai
 
 
     script:

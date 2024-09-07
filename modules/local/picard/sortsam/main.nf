@@ -1,16 +1,16 @@
 process PICARD_SORTSAM {
-    tag "$sample_id"
+    tag "SORT_SAM on $meta.id"
     label 'process_low'
     label "picard"
 
     publishDir params.outdir + "/picard_sort", mode:'copy'
 
     input:
-    tuple val(sample_id), path(bam)
+    tuple val(meta), path(bam)
 
     output:
-    tuple val(sample_id), path("*.bam"), emit: bam
-    tuple val(sample_id), path("*.bai"), optional:true, emit: bai
+    tuple val(meta), path("*.bam"), emit: bam
+    tuple val(meta), path("*.bai"), optional:true, emit: bai
 
     when:
     task.ext.when == null || task.ext.when
@@ -32,7 +32,7 @@ process PICARD_SORTSAM {
     picard \\
         SortSam \\
         --INPUT $bam \\
-        --OUTPUT ${sample_id}.${bam_label}.bam \\
+        --OUTPUT ${meta.id}.${bam_label}.bam \\
         $args
 
     """

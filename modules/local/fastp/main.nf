@@ -1,19 +1,19 @@
 process FASTP {
-    tag "FASTP on $sample_id"
+    tag "FASTP on $meta.id"
     label 'process_medium'
 
 
     input:
-    tuple val(sample_id), path(reads)
+    tuple val(meta), path(reads)
     // path  adapter_fasta
 
     output:
-    tuple val(sample_id), path("${sample_id}*{1,2}.fastq.gz") , emit: reads
-    tuple val(sample_id), path('*.json')           , optional:true  , emit: json
-    tuple val(sample_id), path('*.html')           , optional:true  , emit: html
-    tuple val(sample_id), path('*.log')            , optional:true  , emit: log
-    tuple val(sample_id), path('*.fail.fastq.gz')  , optional:true  , emit: reads_fail
-    tuple val(sample_id), path('*.merged.fastq.gz'), optional:true  , emit: reads_merged
+    tuple val(meta), path("${meta}*{1,2}.fastq.gz") , emit: reads
+    tuple val(meta), path('*.json')           , optional:true  , emit: json
+    tuple val(meta), path('*.html')           , optional:true  , emit: html
+    tuple val(meta), path('*.log')            , optional:true  , emit: log
+    tuple val(meta), path('*.fail.fastq.gz')  , optional:true  , emit: reads_fail
+    tuple val(meta), path('*.merged.fastq.gz'), optional:true  , emit: reads_merged
 
     script:
     // if no external arguments run fastp only for quality control, no trimming allowed
@@ -27,10 +27,10 @@ process FASTP {
     --thread $task.cpus \\
     -i ${reads[0]} \\
     -I ${reads[1]} \\
-    -o ${sample_id}.fastp_R1.fastq.gz \\
-    -O ${sample_id}.fastp_R2.fastq.gz \\
-    --json ${sample_id}.fastp.json \\
-    --html ${sample_id}.fastp.html \\
+    -o ${meta.id}.fastp_R1.fastq.gz \\
+    -O ${meta.id}.fastp_R2.fastq.gz \\
+    --json ${meta.id}.fastp.json \\
+    --html ${meta.id}.fastp.html \\
     $args
     """
 }

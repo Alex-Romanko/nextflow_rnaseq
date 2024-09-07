@@ -1,17 +1,17 @@
 process TRIMGALORE {
-    tag "TRIMGALORE on $sample_id"
+    tag "TRIMGALORE on $meta.id"
     label 'process_medium'
     publishDir params.outdir + "/trim_galore_logs", mode:'copy'
 
     input:
-    tuple val(sample_id), path(reads)
+    tuple val(meta), path(reads)
 
     output:
-    tuple val(sample_id), path("*{3prime,5prime,trimmed,val}*.fq.gz"), emit: reads
-    tuple val(sample_id), path("*report.txt")                        , emit: log     , optional: true
-    tuple val(sample_id), path("*unpaired*.fq.gz")                   , emit: unpaired, optional: true
-    tuple val(sample_id), path("*.html")                             , emit: html    , optional: true
-    tuple val(sample_id), path("*.zip")                              , emit: zip     , optional: true
+    tuple val(meta), path("*{3prime,5prime,trimmed,val}*.fq.gz"), emit: reads
+    tuple val(meta), path("*report.txt")                        , emit: log     , optional: true
+    tuple val(meta), path("*unpaired*.fq.gz")                   , emit: unpaired, optional: true
+    tuple val(meta), path("*.html")                             , emit: html    , optional: true
+    tuple val(meta), path("*.zip")                              , emit: zip     , optional: true
 
 
     script:
@@ -27,15 +27,15 @@ process TRIMGALORE {
     }
 
     """
-    [ ! -f  ${sample_id}_1.fastq.gz ] && ln -s ${reads[0]} ${sample_id}_1.fastq.gz
-    [ ! -f  ${sample_id}_2.fastq.gz ] && ln -s ${reads[1]} ${sample_id}_2.fastq.gz
+    [ ! -f  ${meta.id}_1.fastq.gz ] && ln -s ${reads[0]} ${meta.id}_1.fastq.gz
+    [ ! -f  ${meta.id}_2.fastq.gz ] && ln -s ${reads[1]} ${meta.id}_2.fastq.gz
     trim_galore \\
     $args \\
     --cores $cores \\
     --paired \\
     --gzip \\
-    ${sample_id}_1.fastq.gz \\
-    ${sample_id}_2.fastq.gz
+    ${meta.id}_1.fastq.gz \\
+    ${meta.id}_2.fastq.gz
 
     """
 

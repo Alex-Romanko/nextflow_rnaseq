@@ -1,31 +1,31 @@
 process STAR_ALIGN {
-    tag "STAR_ALIGN on $sample_id"
+    tag "STAR_ALIGN on $meta.id"
     // maxForks 1
     label 'process_high'
     publishDir params.outdir, mode:'copy'
 
     input:
-    tuple val(sample_id), path(reads)
+    tuple val(meta), path(reads)
 
     path index
 
     output:
-    tuple val(sample_id), path('*Log.final.out')   , emit: log_final
-    tuple val(sample_id), path('*Log.out')         , emit: log_out
-    tuple val(sample_id), path('*Log.progress.out'), emit: log_progress
+    tuple val(meta), path('*Log.final.out')   , emit: log_final
+    tuple val(meta), path('*Log.out')         , emit: log_out
+    tuple val(meta), path('*Log.progress.out'), emit: log_progress
 
-    tuple val(sample_id), path('*d.out.bam')              , optional:true, emit: bam
-    tuple val(sample_id), path('*sortedByCoord.out.bam')  , optional:true, emit: bam_sorted
-    tuple val(sample_id), path('*toTranscriptome.out.bam'), optional:true, emit: bam_transcript
-    tuple val(sample_id), path('*Aligned.unsort.out.bam') , optional:true, emit: bam_unsorted
-    tuple val(sample_id), path('*fastq.gz')               , optional:true, emit: fastq
-    tuple val(sample_id), path('*.tab')                   , optional:true, emit: tab
-    tuple val(sample_id), path('*.SJ.out.tab')            , optional:true, emit: spl_junc_tab
-    tuple val(sample_id), path('*.ReadsPerGene.out.tab')  , optional:true, emit: read_per_gene_tab
-    tuple val(sample_id), path('*.out.junction')          , optional:true, emit: junction
-    tuple val(sample_id), path('*.out.sam')               , optional:true, emit: sam
-    tuple val(sample_id), path('*.wig')                   , optional:true, emit: wig
-    tuple val(sample_id), path('*.bg')                    , optional:true, emit: bedgraph
+    tuple val(meta), path('*d.out.bam')              , optional:true, emit: bam
+    tuple val(meta), path('*sortedByCoord.out.bam')  , optional:true, emit: bam_sorted
+    tuple val(meta), path('*toTranscriptome.out.bam'), optional:true, emit: bam_transcript
+    tuple val(meta), path('*Aligned.unsort.out.bam') , optional:true, emit: bam_unsorted
+    tuple val(meta), path('*fastq.gz')               , optional:true, emit: fastq
+    tuple val(meta), path('*.tab')                   , optional:true, emit: tab
+    tuple val(meta), path('*.SJ.out.tab')            , optional:true, emit: spl_junc_tab
+    tuple val(meta), path('*.ReadsPerGene.out.tab')  , optional:true, emit: read_per_gene_tab
+    tuple val(meta), path('*.out.junction')          , optional:true, emit: junction
+    tuple val(meta), path('*.out.sam')               , optional:true, emit: sam
+    tuple val(meta), path('*.wig')                   , optional:true, emit: wig
+    tuple val(meta), path('*.bg')                    , optional:true, emit: bedgraph
 
 
     script:
@@ -38,7 +38,7 @@ process STAR_ALIGN {
     --readFilesIn ${reads[0]} ${reads[1]} \\
     --outReadsUnmapped None \\
     --runThreadN $task.cpus \\
-    --outFileNamePrefix $sample_id. \\
+    --outFileNamePrefix ${meta.id}. \\
     --outSAMtype BAM SortedByCoordinate \\
     --quantMode TranscriptomeSAM GeneCounts \\
     --outSAMunmapped Within \\
@@ -47,7 +47,7 @@ process STAR_ALIGN {
     --peOverlapMMp 0.1  \\
     --genomeLoad NoSharedMemory \\
     --twopassMode Basic \\
-    --outSAMattrRGline 'ID:$sample_id' 'SM:$sample_id' PL:ILLUMINA LB:lib1 PU:NNPIO \\
+    --outSAMattrRGline 'ID:${meta.id}' 'SM:${meta.id}' PL:ILLUMINA LB:lib1 PU:NNPIO \\
     --chimOutJunctionFormat 1 \\
     --chimSegmentMin 12 \\
     --chimJunctionOverhangMin 8 \\
@@ -63,7 +63,6 @@ process STAR_ALIGN {
     --alignSplicedMateMapLminOverLmate 0 \\
     --alignSplicedMateMapLmin 30 \\
     $args
-
     """
 
 
@@ -74,7 +73,7 @@ process STAR_ALIGN {
 // --genomeDir $index \\
 // --readFilesIn ${reads[0]} ${reads[1]} \\
 // --runThreadN $task.cpus \\
-// --outFileNamePrefix $sample_id. \\
+// --outFileNamePrefix ${meta.id}. \\
 // --outSAMtype BAM SortedByCoordinate \\
 // --quantMode TranscriptomeSAM GeneCounts \\
 // --outSAMunmapped Within \\
@@ -82,7 +81,7 @@ process STAR_ALIGN {
 // --peOverlapMMp 0.1  \\
 // --genomeLoad NoSharedMemory \\
 // --twopassMode Basic \\
-// --outSAMattrRGline 'ID:$sample_id' 'SM:$sample_id' PL:ILLUMINA LB:lib1 PU:NNPIO
+// --outSAMattrRGline 'ID:${meta.id}' 'SM:${meta.id}' PL:ILLUMINA LB:lib1 PU:NNPIO
 
 
 // // NM flags:

@@ -1,16 +1,16 @@
 process UMITOOLS_EXTRACT {
-    tag "UMI_EXTRACT on $sample_id"
+    tag "UMI_EXTRACT on $meta.id"
     label "process_single"
     // label "process_long"
 
 
     input:
-    tuple val(sample_id), path(reads)
+    tuple val(meta), path(reads)
 
     output:
-    // tuple val(sample_id), path("*.fastq.gz"), emit: reads
-    tuple val(sample_id), path("${sample_id}.umi_extract_R{1,2}.fastq.gz"), emit: reads
-    tuple val(sample_id), path("*.log")     , emit: log
+    // tuple val(meta), path("*.fastq.gz"), emit: reads
+    tuple val(meta), path("*.umi_extract_R{1,2}.fastq.gz"), emit: reads
+    tuple val(meta), path("*.log")     , emit: log
 
     script:
     def pattern = task.ext.pattern ?: '--bc-pattern=NNNNNNNNNN'
@@ -30,9 +30,9 @@ process UMITOOLS_EXTRACT {
     -I ${reads[1]} \\
     $pattern \\
     --read2-in=${reads[0]} \\
-    -S ${sample_id}.umi_extract_R2.fastq.gz \\
-    --read2-out=${sample_id}.umi_extract_R1.fastq.gz \\
-    --log ${sample_id}.umi_extract.log \\
+    -S ${meta.id}.umi_extract_R2.fastq.gz \\
+    --read2-out=${meta.id}.umi_extract_R1.fastq.gz \\
+    --log ${meta.id}.umi_extract.log \\
     $args
     """
 
@@ -43,10 +43,10 @@ process UMITOOLS_EXTRACT {
 //     extract \\
 //     -I ${reads[0]} \\
 //     --read2-in=${reads[1]} \\
-//     -S ${sample_id}.umi_extract_R1.fastq.gz \\
-//     --read2-out=${sample_id}.umi_extract_R2.fastq.gz \\
+//     -S ${meta}.umi_extract_R1.fastq.gz \\
+//     --read2-out=${meta}.umi_extract_R2.fastq.gz \\
 //     $args \\
 //     $pattern \\
 //     --extract-method=string \\
-//     --log ${sample_id}.umi_extract.log
+//     --log ${meta}.umi_extract.log
 }

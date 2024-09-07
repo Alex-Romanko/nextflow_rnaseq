@@ -1,24 +1,24 @@
 process SAMTOOLS_SORT {
     publishDir params.outdir, mode:'copy'
-    tag "$sample_id"
+    tag "$meta.id"
     label 'process_medium'
 
     input:
-    tuple val(sample_id), path(bam)
+    tuple val(meta), path(bam)
 
     output:
-    tuple val(sample_id), path("*.bam"), emit: bam
-    tuple val(sample_id), path("*.csi"), emit: csi, optional: true
+    tuple val(meta), path("*.bam"), emit: bam
+    tuple val(meta), path("*.csi"), emit: csi, optional: true
 
     script:
     def bamFileName = bam.getName()
-    def bamSuffixe = bamFileName - sample_id - ~/\.bam$/
+    def bamSuffixe = bamFileName - meta - ~/\.bam$/
 
     """
     samtools sort \\
         $bam \\
         -@ $task.cpus \\
-        -o ${sample_id}${bamSuffixe}.sorted.bam \\
+        -o ${meta.id}${bamSuffixe}.sorted.bam \\
 
     """
 }

@@ -1,15 +1,15 @@
 process FASTQC {
 
-    tag "FASTQC on $sample_id"
+    tag "FASTQC on $meta.id"
     publishDir params.outdir + "/fastq_reports", mode:'copy'
     label 'process_medium'
 
 
     input:
-    tuple val(sample_id), path(reads)
+    tuple val(meta), path(reads)
 
     output:
-    path "fastqc_${sample_id}_logs"
+    path "fastqc_${meta.id}_logs"
 
     script:
 
@@ -18,7 +18,7 @@ process FASTQC {
     def fastqc_memory = memory_in_mb > 10000 ? 10000 : (memory_in_mb < 100 ? 100 : memory_in_mb)
 
     """
-    mkdir fastqc_${sample_id}_logs
-    fastqc -o fastqc_${sample_id}_logs -f fastq -q ${reads} --threads $task.cpus --memory $fastqc_memory
+    mkdir fastqc_${meta.id}_logs
+    fastqc -o fastqc_${meta.id}_logs -f fastq -q ${reads} --threads $task.cpus --memory $fastqc_memory
     """
 }

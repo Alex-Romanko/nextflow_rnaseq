@@ -1,13 +1,13 @@
 process UMITOOLS_PREPAREFORRSEM {
-    tag "$sample_id"
+    tag "$meta.id"
     label 'process_medium'
 
     input:
-    tuple val(sample_id), path(bam), path(bai)
+    tuple val(meta), path(bam), path(bai)
 
     output:
-    tuple val(sample_id), path('*.bam'), emit: bam
-    tuple val(sample_id), path('*.log'), optional:true, emit: log
+    tuple val(meta), path('*.bam'), emit: bam
+    tuple val(meta), path('*.log'), optional:true, emit: log
 
 
     script:
@@ -15,8 +15,8 @@ process UMITOOLS_PREPAREFORRSEM {
     """
     umi_tools prepare-for-rsem \\
         --stdin=$bam \\
-        --stdout=${sample_id}.prepare_for_rsem.bam \\
-        --log=${sample_id}.prepare_for_rsem.log \\
+        --stdout=${meta.id}.prepare_for_rsem.bam \\
+        --log=${meta.id}.prepare_for_rsem.log \\
         $args
     """
 }

@@ -1,17 +1,17 @@
 process SEQKIT_PAIR_FQ {
     // publishDir params.outdir + "/merged_fastq", mode:'copy'
-    tag "SEQKIT_PAIR on $sample_id"
+    tag "SEQKIT_PAIR on $meta.id"
     label 'process_medium'
     // label "process_single"
     // label "process_long"
 
 
     input:
-    tuple val(sample_id), path(reads)
+    tuple val(meta), path(reads)
 
     output:
-    tuple val(sample_id), path("${sample_id}*{1,2}.paired.fastq.gz")                  , emit: reads
-    tuple val(sample_id), path("${sample_id}*{1,2}.unpaired.fastq.gz"), optional: true, emit: unpaired_reads
+    tuple val(meta), path("*{1,2}.paired.fastq.gz")                  , emit: reads
+    tuple val(meta), path("*{1,2}.unpaired.fastq.gz"), optional: true, emit: unpaired_reads
 
     script:
     """

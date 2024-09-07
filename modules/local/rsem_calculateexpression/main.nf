@@ -1,29 +1,29 @@
 process RSEM_CALCULATEEXPRESSION {
     label 'process_high'
-    tag "RSEM_expr on $sample_id"
+    tag "RSEM_expr on $meta.id"
     publishDir params.outdir + "/rsem_expressions", mode:'copy'
 
     // label 'process_high'
 
     input:
-    // tuple val(sample_id), path(reads)
+    // tuple val(meta), path(reads)
     path index
-    tuple val (sample_id), path(bam)
+    tuple val (meta), path(bam)
 
     output:
-    tuple val(sample_id), path("*.genes.results")   , emit: counts_gene
-    tuple val(sample_id), path("*.isoforms.results"), emit: counts_transcript
-    tuple val(sample_id), path("*.stat")            , emit: stat
-    // tuple val(sample_id), path("*.log")             , emit: logs
+    tuple val(meta), path("*.genes.results")   , emit: counts_gene
+    tuple val(meta), path("*.isoforms.results"), emit: counts_transcript
+    tuple val(meta), path("*.stat")            , emit: stat
+    // tuple val(meta), path("*.log")             , emit: logs
     // path  "versions.yml"                       , emit: versions
 
-    tuple val(sample_id), path("*.STAR.genome.bam")       , optional:true, emit: bam_star
-    tuple val(sample_id), path("${sample_id}.genome.bam")    , optional:true, emit: bam_genome
-    tuple val(sample_id), path("${sample_id}.genome.sorted.bam")    , optional:true, emit: bam_genome_sorted
-    tuple val(sample_id), path("${sample_id}.genome.sorted.bam.bai")    , optional:true, emit: bam_genome_sorted_bai
-    tuple val(sample_id), path("${sample_id}.transcript.bam"), optional:true, emit: bam_transcript
-    tuple val(sample_id), path("${sample_id}.transcript.sorted.bam"), optional:true, emit: bam_transcript_sorted
-    tuple val(sample_id), path("${sample_id}.transcript.sorted.bam.bai"), optional:true, emit: bam_transcript_sorted_bai
+    tuple val(meta), path("*.STAR.genome.bam")       , optional:true, emit: bam_star
+    tuple val(meta), path("${meta.id}.genome.bam")    , optional:true, emit: bam_genome
+    tuple val(meta), path("${meta.id}.genome.sorted.bam")    , optional:true, emit: bam_genome_sorted
+    tuple val(meta), path("${meta.id}.genome.sorted.bam.bai")    , optional:true, emit: bam_genome_sorted_bai
+    tuple val(meta), path("${meta.id}.transcript.bam"), optional:true, emit: bam_transcript
+    tuple val(meta), path("${meta.id}.transcript.sorted.bam"), optional:true, emit: bam_transcript_sorted
+    tuple val(meta), path("${meta.id}.transcript.sorted.bam.bai"), optional:true, emit: bam_transcript_sorted_bai
 
     // flag
     // --temporary-folder ./tmp/
@@ -44,7 +44,7 @@ process RSEM_CALCULATEEXPRESSION {
     --strandedness none \\
     --alignments --paired-end $bam \\
     \$INDEX \\
-    $sample_id
+    $meta.id
 
     """
 }
