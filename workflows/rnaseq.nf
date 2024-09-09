@@ -12,6 +12,9 @@ include { FASTQC } from '../modules/local/fastqc'
 include { TRIMGALORE } from '../modules/local/trimgalore'
 include { STAR_GENOMEGENERATE } from '../modules/local/star_genome'
 include { STAR_ALIGN } from '../modules/local/star_align'
+include { CTAT_LIB_BUILD } from '../modules/local/star_fusion/ctat_lib_build'
+
+
 
 include { SEQKIT_PAIR_FQ } from '../modules/local/seqkit_pair'
 
@@ -264,7 +267,9 @@ workflow RNASEQ {
 	RSEM_MERGE_EXPRESSIONS (genes_ch, isoforms_ch)
     }
 
+    // ctat_source_ch = channel.fromPath( params.ctat_source, type: 'dir' )
 
+    // CTAT_LIB_BUILD (genome_ch, gtf_ch)
 
     // SAMTOOLS_SORT ( RSEM_CALCULATEEXPRESSION.out.bam_transcript )
 

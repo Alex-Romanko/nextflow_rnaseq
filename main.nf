@@ -23,6 +23,12 @@ params.fastq_dir = null
 params.transcriptome_file = null
 params.gtf_file = null
 
+// pre built lib
+params.ctat_lib_dir = null
+
+// source for ctat lib creation
+params.ctat_source = null
+
 params.trim_x = true
 params.rsem = true
 
@@ -33,10 +39,11 @@ params.val_get_dedup_stats = false
 
 
 log.info """\
-    R N A S E Q - N F   P I P E L I N E
-    ===================================
+    A L E X * R N A S E Q * P I P E L I N E
+    =======================================
     transcriptome: ${params.transcriptome_file}
     gtf          : ${params.gtf_file}
+    CTAT_LIB     : ${params.ctat_lib_dir}
 
     profile      : ${workflow.profile}
     project home : ${workflow.projectDir}
