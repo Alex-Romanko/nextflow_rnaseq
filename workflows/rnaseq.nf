@@ -34,6 +34,7 @@ include { SAMTOOLS_INDEX as SAMTOOLS_INDEX_DEDUP_TR } from '../modules/local/sam
 include { STAR_GENOMEGENERATE } from '../modules/local/star/star_genome'
 include { STAR_ALIGN } from '../modules/local/star/star_align'
 include { CTAT_LIB_BUILD } from '../modules/local/star_fusion/ctat_lib_build'
+include { STAR_FUSION_STAR } from '../modules/local/star_fusion/star_fusion_star'
 
 include { RSEM_PREPAREREFERENCE } from '../modules/local/rsem/rsem_preparereference'
 include { RSEM_CALCULATEEXPRESSION } from '../modules/local/rsem/rsem_calculateexpression'
@@ -102,6 +103,28 @@ workflow RNASEQ {
 	.fromPath( params.gtf_file, type: 'file' )
 	.set { gtf_ch }
 
+    if ( params.ctat_build ) {
+
+	CTAT_LIB_BUILD (genome_ch, gtf_ch)
+	ch_ctat_lib = CTAT_LIB_BUILD.out.ctat_genome_lib.first()
+    } else {
+	Channel
+	    .fromPath( params.ctat_lib_dir, type: 'any' ).first()
+	    .set { ch_ctat_lib }
+    }
+
+	STAR_GENOMEGENERATE(genome_ch, gtf_ch )
+
+	STAR_GENOMEGENERATE
+	    .out
+	    .genome_index
+	    .first()
+	    .set { star_ind_ch }
+
+
+
+
+
     MERGE_FQ ( files_channel )
 
     MERGE_FQ
@@ -125,10 +148,10 @@ workflow RNASEQ {
 
     TRIMGALORE ( SEQKIT_PAIR_FQ.out.reads )
 
-    TRIMGALORE
-	.out
-	.reads
-	.set { read_pairs_ch }
+    // TRIMGALORE
+    // 	.out
+    // 	.reads
+    // 	.set { read_pairs_ch }
 
     /*
      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -142,21 +165,15 @@ workflow RNASEQ {
 
     if ( params.UMI ) {
 
-	UMI_EXTRACT( read_pairs_ch )
+	UMI_EXTRACT( TRIMGALORE.out.reads )
 
 	FASTP_TRIM_CLIP ( UMI_EXTRACT.out.reads )
 
 	FASTQC( FASTP_TRIM_CLIP.out.reads )
 
-	STAR_GENOMEGENERATE(genome_ch, gtf_ch )
 
-	STAR_GENOMEGENERATE
-	    .out
-	    .genome_index
-	    .first()
-	    .set { star_ind_ch }
-
-	STAR_ALIGN ( FASTP_TRIM_CLIP.out.reads, star_ind_ch )
+	ch_reads_for_star = FASTP_TRIM_CLIP.out.reads
+	STAR_ALIGN ( ch_reads_for_star, star_ind_ch )
 
 	SAMTOOLS_INDEX ( STAR_ALIGN.out.bam_sorted )
 
@@ -201,17 +218,11 @@ workflow RNASEQ {
     } else {
 
 
-	FASTQC( read_pairs_ch )
+	FASTQC( TRIMGALORE.out.reads )
 
-	STAR_GENOMEGENERATE(genome_ch, gtf_ch )
 
-	STAR_GENOMEGENERATE
-	    .out
-	    .genome_index
-	    .first()
-	    .set { star_ind_ch }
-
-	STAR_ALIGN ( read_pairs_ch, star_ind_ch )
+	ch_reads_for_star = TRIMGALORE.out.reads
+	STAR_ALIGN ( ch_reads_for_star, star_ind_ch )
 
 	SAMTOOLS_INDEX ( STAR_ALIGN.out.bam_sorted )
 
@@ -224,6 +235,9 @@ workflow RNASEQ {
 	}
 
     }
+
+    ch_star_fusion_reads_juntions = ch_reads_for_star.join(STAR_ALIGN.out.junction)
+    STAR_FUSION_STAR (ch_star_fusion_reads_juntions, ch_ctat_lib)
 
 
     // end standart wf
@@ -260,7 +274,6 @@ workflow RNASEQ {
 
     // ctat_source_ch = channel.fromPath( params.ctat_source, type: 'dir' )
 
-    // CTAT_LIB_BUILD (genome_ch, gtf_ch)
 
     // SAMTOOLS_SORT ( RSEM_CALCULATEEXPRESSION.out.bam_transcript )
 

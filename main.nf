@@ -23,11 +23,16 @@ params.fastq_dir = null
 params.transcriptome_file = null
 params.gtf_file = null
 
-// pre built lib
-params.ctat_lib_dir = null
 
-// source for ctat lib creation
-params.ctat_source = null
+
+// if true - create local ctat built
+// process will download source files
+// and create CTAT lib loally
+// takes several days
+params.ctat_build = false
+
+// for pre built CTAT lib usage
+params.ctat_lib_dir = null
 
 params.trim_x = true
 params.rsem = true
@@ -43,7 +48,8 @@ log.info """\
     =======================================
     transcriptome: ${params.transcriptome_file}
     gtf          : ${params.gtf_file}
-    CTAT_LIB     : ${params.ctat_lib_dir}
+    CTAT_build   : ${params.ctat_build}
+    CTAT_lib_dir : ${params.ctat_lib_dir}
 
     profile      : ${workflow.profile}
     project home : ${workflow.projectDir}

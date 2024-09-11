@@ -89,7 +89,7 @@ function run_nextflow {
     GENOME="/home/alex/projects/DBs/GenCode/GRCh38.p14.genome.fa"
     GENOME_GTF="/home/alex/projects/DBs/GenCode/gencode.v44.annotation.gtf"
     CTAT_LIB_DIR="/home/alex/projects/DBs/trinity_ctat/GRCh38_gencode_v44_CTAT_lib_Oct292023.plug-n-play/ctat_genome_lib_build_dir"
-    CTAT_SOURCE_DIR="/home/alex/projects/DBs/trinity_ctat/GRCh38_gencode_v44_CTAT_lib_Oct292023.source/"
+    ## CTAT_SOURCE_DIR="/home/alex/projects/DBs/trinity_ctat/GRCh38_gencode_v44_CTAT_lib_Oct292023.source/"
 
     # Path to Nextflow script
     project_path="/home/alex/projects/nextflow_rna_seq/"
@@ -116,8 +116,8 @@ function run_nextflow {
 	     --fastq_dir "$FASTQ" \
 	     --transcriptome_file "$GENOME" \
 	     --gtf_file "$GENOME_GTF" \
-	     --ctat_lib_dir "$CTAT_LIB_DIR" \
-	     --ctat_source "$CTAT_SOURCE_DIR"
+	     --ctat_lib_dir "$CTAT_LIB_DIR"
+	     # --ctat_source "$CTAT_SOURCE_DIR"
 }
 
 run_nextflow

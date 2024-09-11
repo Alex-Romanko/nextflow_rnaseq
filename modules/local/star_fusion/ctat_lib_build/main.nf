@@ -41,7 +41,7 @@ process CTAT_LIB_BUILD {
         --dfam_db homo_sapiens_dfam.hmm \\
         --max_readlength $read_length \\
         --CPU $task.cpus
-
+    rm -r ./tmp
     """
 
 }
