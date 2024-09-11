@@ -1,6 +1,6 @@
 process STAR_FUSION_STAR {
     tag "STAR_FUSION_STAR on $meta.id"
-    label 'process_high'
+    label 'process_medium'
 
     publishDir params.outdir + "/results_fusion/star_fusiob_basic", mode:'copy'
 
@@ -33,7 +33,6 @@ process STAR_FUSION_STAR {
 
     STAR-Fusion \\
     --genome_lib_dir $ctat_lib \\
-    $fastq \\
     -J $junction \\
     --CPU $task.cpus \\
     --examine_coding_effect \\
