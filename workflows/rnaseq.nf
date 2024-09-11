@@ -10,43 +10,34 @@
 include { MERGE_FQ } from '../modules/local/merge_fasstq'
 include { FASTQC } from '../modules/local/fastqc'
 include { TRIMGALORE } from '../modules/local/trimgalore'
-include { STAR_GENOMEGENERATE } from '../modules/local/star_genome'
-include { STAR_ALIGN } from '../modules/local/star_align'
-include { CTAT_LIB_BUILD } from '../modules/local/star_fusion/ctat_lib_build'
-
-
-
 include { SEQKIT_PAIR_FQ } from '../modules/local/seqkit_pair'
-
 include { FASTP as FASTP_TRIM_X } from '../modules/local/fastp'
 include { FASTP as FASTP_TRIM_CLIP } from '../modules/local/fastp'
 
 
-include { UMITOOLS_EXTRACT as UMI_EXTRACT } from '../modules/local/umi_extract'
-include { UMITOOLS_DEDUP as UMI_DEDUP_GN } from '../modules/local/umi_dedup'
-include { UMITOOLS_DEDUP as UMI_DEDUP_TR } from '../modules/local/umi_dedup'
+include { UMITOOLS_EXTRACT as UMI_EXTRACT } from '../modules/local/umi_tools/umi_extract'
+include { UMITOOLS_DEDUP as UMI_DEDUP_GN } from '../modules/local/umi_tools/umi_dedup'
+include { UMITOOLS_DEDUP as UMI_DEDUP_TR } from '../modules/local/umi_tools/umi_dedup'
+include { UMITOOLS_PREPAREFORRSEM } from '../modules/local/umi_tools/umi_prep_for_rsem'
+
 
 include { PICARD_SORTSAM } from '../modules/local/picard/sortsam'
 
+include { SAMTOOLS_SORT as SAMTOOLS_SORT_TR } from '../modules/local/samtools/samtools_sort'
+
+include { SAMTOOLS_INDEX } from '../modules/local/samtools/samtools_index'
+include { SAMTOOLS_INDEX as SAMTOOLS_INDEX_TR } from '../modules/local/samtools/samtools_index'
+include { SAMTOOLS_INDEX as SAMTOOLS_INDEX_DEDUP_TR } from '../modules/local/samtools/samtools_index'
+// include { SAMTOOLS_FAIDX } from '../modules/local/samtools/samtools_faidx'
 
 
-include { UMITOOLS_PREPAREFORRSEM } from '../modules/local/umi_prep_for_rsem'
+include { STAR_GENOMEGENERATE } from '../modules/local/star/star_genome'
+include { STAR_ALIGN } from '../modules/local/star/star_align'
+include { CTAT_LIB_BUILD } from '../modules/local/star_fusion/ctat_lib_build'
 
-
-
-include { SAMTOOLS_SORT as SAMTOOLS_SORT_TR } from '../modules/local/samtools_sort'
-
-include { SAMTOOLS_INDEX } from '../modules/local/samtools_index'
-include { SAMTOOLS_INDEX as SAMTOOLS_INDEX_TR } from '../modules/local/samtools_index'
-include { SAMTOOLS_INDEX as SAMTOOLS_INDEX_DEDUP_TR } from '../modules/local/samtools_index'
-include { RSEM_PREPAREREFERENCE } from '../modules/local/rsem_preparereference'
-// include { SAMTOOLS_FAIDX } from '../modules/local/samtools_faidx'
-
-
-
-include { RSEM_CALCULATEEXPRESSION } from '../modules/local/rsem_calculateexpression'
-
-include { RSEM_MERGE_EXPRESSIONS } from '../modules/local/rsem_merge_expressions'
+include { RSEM_PREPAREREFERENCE } from '../modules/local/rsem/rsem_preparereference'
+include { RSEM_CALCULATEEXPRESSION } from '../modules/local/rsem/rsem_calculateexpression'
+include { RSEM_MERGE_EXPRESSIONS } from '../modules/local/rsem/rsem_merge_expressions'
 //
 // SUBWORKFLOW: Consisting of a mix of local and nf-core/modules
 //
