@@ -1,7 +1,6 @@
 process FASTQC {
 
     tag "FASTQC on $meta.id"
-    publishDir params.outdir + "/fastq_reports", mode:'copy'
     label 'process_medium'
 
 

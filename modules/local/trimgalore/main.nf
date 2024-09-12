@@ -1,7 +1,6 @@
 process TRIMGALORE {
     tag "TRIMGALORE on $meta.id"
     label 'process_medium'
-    publishDir params.outdir + "/trim_galore_logs", mode:'copy'
 
     input:
     tuple val(meta), path(reads)

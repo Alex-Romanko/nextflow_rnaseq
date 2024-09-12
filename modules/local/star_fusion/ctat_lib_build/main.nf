@@ -1,6 +1,6 @@
 process CTAT_LIB_BUILD {
     tag "CTAT_LIB_BUILD on $fasta"
-    label 'process_high'
+    label 'process_high_long'
     storeDir "$projectDir/data/ctat_genome_lib_build_dir"
 
 

@@ -35,6 +35,7 @@ include { STAR_GENOMEGENERATE } from '../modules/local/star/star_genome'
 include { STAR_ALIGN } from '../modules/local/star/star_align'
 include { CTAT_LIB_BUILD } from '../modules/local/star_fusion/ctat_lib_build'
 include { STAR_FUSION_STAR } from '../modules/local/star_fusion/star_fusion_star'
+include { STAR_FUSION_FIINSPECTOR } from '../modules/local/star_fusion/star_fusion_fiinspector'
 
 include { RSEM_PREPAREREFERENCE } from '../modules/local/rsem/rsem_preparereference'
 include { RSEM_CALCULATEEXPRESSION } from '../modules/local/rsem/rsem_calculateexpression'
@@ -239,6 +240,8 @@ workflow RNASEQ {
     ch_star_fusion_reads_juntions = ch_reads_for_star.join(STAR_ALIGN.out.junction)
     STAR_FUSION_STAR (ch_star_fusion_reads_juntions, ch_ctat_lib)
 
+
+    STAR_FUSION_FIINSPECTOR (ch_star_fusion_reads_juntions, ch_ctat_lib)
 
     // end standart wf
 

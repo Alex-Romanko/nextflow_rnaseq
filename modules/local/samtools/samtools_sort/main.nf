@@ -12,7 +12,9 @@ process SAMTOOLS_SORT {
 
     script:
     def bamFileName = bam.getName()
-    def bamSuffixe = bamFileName - meta - ~/\.bam$/
+    def bamSuffixe = bamFileName - "${meta.id}" - ~/\.bam$/
+
+    // prefix = task.ext.prefix ?: "${meta.id}"
 
     """
     samtools sort \\

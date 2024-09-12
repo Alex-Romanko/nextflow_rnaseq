@@ -8,7 +8,7 @@ process FASTP {
     // path  adapter_fasta
 
     output:
-    tuple val(meta), path("${meta}*{1,2}.fastq.gz") , emit: reads
+    tuple val(meta), path("${prefix}*{1,2}.fastq.gz") , emit: reads
     tuple val(meta), path('*.json')           , optional:true  , emit: json
     tuple val(meta), path('*.html')           , optional:true  , emit: html
     tuple val(meta), path('*.log')            , optional:true  , emit: log
@@ -18,6 +18,7 @@ process FASTP {
     script:
     // if no external arguments run fastp only for quality control, no trimming allowed
     def args = task.ext.args ?: '-Q -L -A -G'
+    prefix = task.ext.prefix ?: "${meta.id}"
 
     // def adapter_list = adapter_fasta ? "--adapter_fasta ${adapter_fasta}" : ""
     // Added soft-links to original fastqs for consistent naming in MultiQC
@@ -27,10 +28,10 @@ process FASTP {
     --thread $task.cpus \\
     -i ${reads[0]} \\
     -I ${reads[1]} \\
-    -o ${meta.id}.fastp_R1.fastq.gz \\
-    -O ${meta.id}.fastp_R2.fastq.gz \\
-    --json ${meta.id}.fastp.json \\
-    --html ${meta.id}.fastp.html \\
+    -o ${prefix}.fastp_R1.fastq.gz \\
+    -O ${prefix}.fastp_R2.fastq.gz \\
+    --json ${prefix}.fastp.json \\
+    --html ${prefix}.fastp.html \\
     $args
     """
 }

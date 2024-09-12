@@ -1,5 +1,4 @@
 process MERGE_FQ {
-    publishDir params.outdir + "/merged_fastq", mode:'copy'
     tag "MERGE_FQ on $meta.id"
 
     label 'process_low'

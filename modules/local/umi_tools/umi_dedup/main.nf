@@ -8,7 +8,7 @@ process UMITOOLS_DEDUP {
     val get_output_stats
 
     output:
-    tuple val(meta), path("*.dedup_UMI.bam")     , emit: bam
+    tuple val(meta), path("*.dedup_UMI.bam")   , emit: bam
     tuple val(meta), path("*.log")             , emit: log
     tuple val(meta), path("*edit_distance.tsv"), optional:true, emit: tsv_edit_distance
     tuple val(meta), path("*per_umi.tsv")      , optional:true, emit: tsv_per_umi
