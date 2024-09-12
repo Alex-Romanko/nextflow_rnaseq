@@ -46,7 +46,7 @@ EOF
 ## example:
 ## https://www.baeldung.com/linux/use-command-line-arguments-in-bash-script
 ## https://stackoverflow.com/questions/30420354/bash-optional-argument-required-but-not-passed-for-use-in-getopts
-while getopts hp:u: flag
+while getopts hp:b:u: flag
 do
     case "${flag}" in
         p)
@@ -56,6 +56,14 @@ do
 	    umi=${OPTARG}
 	    if ! [[ "$umi" = "true" || "$umi" = "false" ]]; then
 		echo "Invalid value for UMI flag: ${umi}"
+		echo "Accepted values: true/false."
+		exit 1
+	    fi
+	   ;;
+	b)
+	    build_ctat=${OPTARG}
+	    if ! [[ "$build_ctat" = "true" || "$build_ctat" = "false" ]]; then
+		echo "Invalid value for Build CTAT Lib flag: ${build_ctat}"
 		echo "Accepted values: true/false."
 		exit 1
 	    fi
@@ -101,6 +109,12 @@ function run_nextflow {
 
     UMI="false"
     UMI="${umi:-$UMI}"
+    # ctat_build
+    BUILD_CTAT="false"
+    BUILD_CTAT="${build_ctat:-$BUILD_CTAT}"
+
+
+
     ARGS=""
     ARGS="${nf_args:-$ARGS}"
 
@@ -111,6 +125,7 @@ function run_nextflow {
 	     -resume \
 	     -ansi-log true \
 	     --UMI "$UMI" \
+	     --ctat_build "BUILD_CTAT" \
 	     --outdir "$RESULTS" \
 	     --multiqc "$MULTIQC" \
 	     --fastq_dir "$FASTQ" \

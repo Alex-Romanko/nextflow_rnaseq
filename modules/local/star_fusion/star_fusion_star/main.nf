@@ -17,7 +17,7 @@ process STAR_FUSION_STAR {
     script:
     def fastq = "--left_fq ${reads[0]} --right_fq ${reads[1]}"
     def args = task.ext.args ?: ''
-    def ctat_lib = params.ctat_build ? "${reference}/ctat_genome_lib_build_dir" : "${reference}"
+    def ctat_lib = "${reference}"
     def prefix = "${meta.id}"
 
     """

@@ -12,7 +12,7 @@ process CTAT_LIB_BUILD {
     // tuple val(meta2), path(gtf)
 
     output:
-    path "*"  , emit: ctat_genome_lib
+    path "ctat_genome_lib_build_dir"  , emit: ctat_genome_lib
 
     script:
     def prep_genome_lib =  "/usr/local/src/STAR-Fusion/ctat-genome-lib-builder/prep_genome_lib.pl"
