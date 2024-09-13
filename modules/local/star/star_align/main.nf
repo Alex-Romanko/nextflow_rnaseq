@@ -3,6 +3,8 @@ process STAR_ALIGN {
     // maxForks 1
     label 'process_high'
     publishDir params.outdir, mode:'copy'
+    scratch '$tmppath'
+    stageOutMode 'move'
 
     input:
     tuple val(meta), path(reads)

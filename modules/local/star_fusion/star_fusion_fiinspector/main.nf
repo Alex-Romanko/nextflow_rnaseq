@@ -4,6 +4,8 @@ process STAR_FUSION_FIINSPECTOR {
     publishDir params.outdir + "/results_fusion/fiinspector", mode:'copy'
     // do not fail if no fusion found
     errorStrategy = { task.exitStatus = 1 ? 'ignore' : 'finish' }
+    scratch '$tmppath'
+    stageOutMode 'move'
 
 
     input:
