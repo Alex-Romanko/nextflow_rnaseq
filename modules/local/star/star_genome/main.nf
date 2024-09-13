@@ -1,8 +1,8 @@
 process STAR_GENOMEGENERATE {
     tag "$fasta"
     label 'process_high'
-    storeDir "$projectDir/data/STAR_index"
-    scratch '$tmppath'
+    storeDir "${params.storeDir}/data/STAR_index"
+    scratch '$TMPDIR'
     stageOutMode 'move'
     // publishDir params.outdir + "/STAR_genome", mode:'copy'
 

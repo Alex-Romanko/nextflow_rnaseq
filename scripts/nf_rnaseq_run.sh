@@ -125,7 +125,7 @@ function run_nextflow {
 	     -resume \
 	     -ansi-log true \
 	     --UMI "$UMI" \
-	     --ctat_build "BUILD_CTAT" \
+	     --ctat_build "$BUILD_CTAT" \
 	     --outdir "$RESULTS" \
 	     --multiqc "$MULTIQC" \
 	     --fastq_dir "$FASTQ" \

@@ -1,7 +1,7 @@
 process UMITOOLS_DEDUP {
     tag "UMITOOLS_DEDUP $meta.id"
     label "process_medium"
-    scratch '$tmppath'
+    scratch '$TMPDIR'
     stageOutMode 'move'
 
 

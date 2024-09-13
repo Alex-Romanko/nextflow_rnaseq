@@ -183,7 +183,7 @@ workflow RNASEQ {
 	ch_bam_index = SAMTOOLS_INDEX.out.bai
 
 	ch_get_umi_stats = Channel.value ( params.val_get_dedup_stats )
-	UMI_DEDUP_GN ( ch_star_bam.join(ch_bam_index), ch_get_umi_stats )
+	// UMI_DEDUP_GN ( ch_star_bam.join(ch_bam_index), ch_get_umi_stats )
 
 	// PICARD_SORTSAM ( UMI_DEDUP_GN.out.bam )
 
