@@ -1,7 +1,7 @@
 process UMITOOLS_DEDUP {
     tag "UMITOOLS_DEDUP $meta.id"
     label "process_medium"
-    scratch $(mktemp '$tmppath')
+    scratch '$tmppath'
     stageOutMode 'move'
 
 
@@ -22,10 +22,6 @@ process UMITOOLS_DEDUP {
     stats = get_output_stats ? "--output-stats ${meta.id}" : ""
 
     """
-    echo 'tmppath is'
-    echo \$tmppath
-    echo 'TMPDIR is'
-    echo \$TMPDIR
     PYTHONHASHSEED=0 umi_tools \\
         dedup \\
         -I $bam \\
