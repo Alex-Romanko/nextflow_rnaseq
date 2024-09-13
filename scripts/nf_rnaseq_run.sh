@@ -5,7 +5,6 @@ set -euo pipefail
 ### add this script to your $PATH
 
 
-tmppath="/home/nf_work"
 
 showHelp() {
 

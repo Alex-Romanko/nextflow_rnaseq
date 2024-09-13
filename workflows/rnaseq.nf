@@ -193,24 +193,24 @@ workflow RNASEQ {
 	    STAR_ALIGN
 		.out
 		.bam_transcript
-		.set { transcript_bam_ch }
-
-
-
-
-	    SAMTOOLS_SORT_TR ( transcript_bam_ch )
-
-	    SAMTOOLS_INDEX_TR (SAMTOOLS_SORT_TR.out.bam )
-
-	    UMI_DEDUP_TR ( SAMTOOLS_SORT_TR.out.bam.join(SAMTOOLS_INDEX_TR.out.bai), ch_get_umi_stats )
-	    SAMTOOLS_INDEX_DEDUP_TR ( UMI_DEDUP_TR.out.bam )
-
-	    UMITOOLS_PREPAREFORRSEM ( UMI_DEDUP_TR.out.bam.join(SAMTOOLS_INDEX_DEDUP_TR.out.bai) )
-
-	    UMITOOLS_PREPAREFORRSEM
-		.out
-		.bam
 		.set { transcript_bam_for_rsem_ch }
+
+
+
+
+	    // SAMTOOLS_SORT_TR ( transcript_bam_ch )
+
+	    // SAMTOOLS_INDEX_TR (SAMTOOLS_SORT_TR.out.bam )
+
+	    // UMI_DEDUP_TR ( SAMTOOLS_SORT_TR.out.bam.join(SAMTOOLS_INDEX_TR.out.bai), ch_get_umi_stats )
+	    // SAMTOOLS_INDEX_DEDUP_TR ( UMI_DEDUP_TR.out.bam )
+
+	    // UMITOOLS_PREPAREFORRSEM ( UMI_DEDUP_TR.out.bam.join(SAMTOOLS_INDEX_DEDUP_TR.out.bai) )
+
+	    // UMITOOLS_PREPAREFORRSEM
+	    // 	.out
+	    // 	.bam
+	    // 	.set { transcript_bam_for_rsem_ch }
 
 	}
 
