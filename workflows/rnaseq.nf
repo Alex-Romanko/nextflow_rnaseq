@@ -36,6 +36,9 @@ include { STAR_ALIGN } from '../modules/local/star/star_align'
 include { CTAT_LIB_BUILD } from '../modules/local/star_fusion/ctat_lib_build'
 include { STAR_FUSION_STAR } from '../modules/local/star_fusion/star_fusion_star'
 include { STAR_FUSION_FIINSPECTOR } from '../modules/local/star_fusion/star_fusion_fiinspector'
+include { STAR_FUSION_MERGE_TSV as MERGE_STAR_PREDICTIONS } from '../modules/local/star_fusion/merge_tsv'
+include { STAR_FUSION_MERGE_TSV as MERGE_STAR_ABRIDGED } from '../modules/local/star_fusion/merge_tsv'
+include { STAR_FUSION_MERGE_TSV as MERGE_STAR_CODING_EFF } from '../modules/local/star_fusion/merge_tsv'
 
 include { RSEM_PREPAREREFERENCE } from '../modules/local/rsem/rsem_preparereference'
 include { RSEM_CALCULATEEXPRESSION } from '../modules/local/rsem/rsem_calculateexpression'
@@ -239,6 +242,42 @@ workflow RNASEQ {
 
     ch_star_fusion_reads_juntions = ch_reads_for_star.join(STAR_ALIGN.out.junction)
     STAR_FUSION_STAR (ch_star_fusion_reads_juntions, ch_ctat_lib)
+
+
+    ch_fusions_fn = channel.value( 'ALL.starfusion.fusion_predictions' )
+    STAR_FUSION_STAR
+	.out
+	.fusions
+	.map{
+	    sapmle, file -> file
+	}
+	.collect(flat: true, sort: true)
+	.set{ fusions_star_ch }
+
+    ch_fusions_abridged_fn = channel.value( 'ALL.starfusion.abridged' )
+    STAR_FUSION_STAR
+	.out
+	.abridged
+	.map{
+	    sapmle, file -> file
+	}
+	.collect(flat: true, sort: true)
+	.set{ abridged_star_ch }
+
+    ch_fusions_coding_effect_fn = channel.value( 'ALL.starfusion.abridged.coding_effect' )
+    STAR_FUSION_STAR
+	.out
+	.coding_effect
+	.map{
+	    sapmle, file -> file
+	}
+	.collect(flat: true, sort: true)
+	.set{ coding_effect_star_ch }
+
+
+    MERGE_STAR_PREDICTIONS ( fusions_star_ch, ch_fusions_fn )
+    MERGE_STAR_ABRIDGED ( abridged_star_ch, ch_fusions_abridged_fn )
+    MERGE_STAR_CODING_EFF ( coding_effect_star_ch, ch_fusions_coding_effect_fn )
 
 
     STAR_FUSION_FIINSPECTOR (ch_star_fusion_reads_juntions, ch_ctat_lib)
