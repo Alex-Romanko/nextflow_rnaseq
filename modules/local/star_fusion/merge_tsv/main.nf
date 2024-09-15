@@ -1,5 +1,6 @@
 process STAR_FUSION_MERGE_TSV {
     tag "STAR_FUSION_MERGE"
+    label 'process_single'
     publishDir params.outdir + "/results_fusion/", mode:'copy'
 
     input:

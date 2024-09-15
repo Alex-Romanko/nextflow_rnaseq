@@ -43,6 +43,11 @@ include { STAR_FUSION_MERGE_TSV as MERGE_STAR_CODING_EFF } from '../modules/loca
 include { RSEM_PREPAREREFERENCE } from '../modules/local/rsem/rsem_preparereference'
 include { RSEM_CALCULATEEXPRESSION } from '../modules/local/rsem/rsem_calculateexpression'
 include { RSEM_MERGE_EXPRESSIONS } from '../modules/local/rsem/rsem_merge_expressions'
+
+include { ARRIBA_DOWNLOAD_DB } from '../modules/local/arriba/arriba_download_db'
+include { ARRIBA_FUSION } from '../modules/local/arriba/arriba_fusion'
+include { STAR_FUSION_MERGE_TSV as MERGE_ARRIBA_FUSIONS } from '../modules/local/star_fusion/merge_tsv'
+
 //
 // SUBWORKFLOW: Consisting of a mix of local and nf-core/modules
 //
@@ -101,10 +106,12 @@ workflow RNASEQ {
 
     Channel
 	.fromPath( params.transcriptome_file, type: 'file' )
+	.first()
 	.set{ genome_ch }
 
     Channel
 	.fromPath( params.gtf_file, type: 'file' )
+	.first()
 	.set { gtf_ch }
 
     if ( params.ctat_build ) {
@@ -117,13 +124,20 @@ workflow RNASEQ {
 	    .set { ch_ctat_lib }
     }
 
-	STAR_GENOMEGENERATE(genome_ch, gtf_ch )
 
-	STAR_GENOMEGENERATE
-	    .out
-	    .genome_index
-	    .first()
-	    .set { star_ind_ch }
+    ARRIBA_DOWNLOAD_DB ()
+    ARRIBA_DOWNLOAD_DB
+	.out
+	.arriba_db
+	.set { arriba_db_ch }
+
+    STAR_GENOMEGENERATE(genome_ch, gtf_ch )
+
+    STAR_GENOMEGENERATE
+	.out
+	.genome_index
+	.first()
+	.set { star_ind_ch }
 
 
 
@@ -177,9 +191,24 @@ workflow RNASEQ {
 
 
 	ch_reads_for_star = FASTP_TRIM_CLIP.out.reads
-	STAR_ALIGN ( ch_reads_for_star, star_ind_ch )
 
+	STAR_ALIGN ( ch_reads_for_star, star_ind_ch )
 	SAMTOOLS_INDEX ( STAR_ALIGN.out.bam_sorted )
+
+	ARRIBA_FUSION ( ch_reads_for_star, genome_ch, gtf_ch, star_ind_ch, arriba_db_ch)
+
+	ch_merge_arriba_fn = channel.value( 'ALL.arriba.fusions' )
+	ARRIBA_FUSION
+	    .out
+	    .fusions
+	    .map{
+		sapmle, file -> file
+	    }
+	    .collect(flat: true, sort: true)
+	    .set{ arriba_out_fusions_ch }
+
+	MERGE_ARRIBA_FUSIONS ( arriba_out_fusions_ch, ch_merge_arriba_fn )
+
 
 
 	ch_star_bam = STAR_ALIGN.out.bam_sorted
@@ -226,9 +255,24 @@ workflow RNASEQ {
 
 
 	ch_reads_for_star = TRIMGALORE.out.reads
-	STAR_ALIGN ( ch_reads_for_star, star_ind_ch )
 
+	STAR_ALIGN ( ch_reads_for_star, star_ind_ch )
 	SAMTOOLS_INDEX ( STAR_ALIGN.out.bam_sorted )
+
+	ARRIBA_FUSION ( ch_reads_for_star, genome_ch, gtf_ch, star_ind_ch, arriba_db_ch)
+
+	ch_merge_arriba_fn = channel.value( 'ALL.arriba.fusions' )
+	ARRIBA_FUSION
+	    .out
+	    .fusions
+	    .map{
+		sapmle, file -> file
+	    }
+	    .collect(flat: true, sort: true)
+	    .set{ arriba_out_fusions_ch }
+
+	MERGE_ARRIBA_FUSIONS ( arriba_out_fusions_ch, ch_merge_arriba_fn )
+
 
 	if ( params.rsem ) {
 

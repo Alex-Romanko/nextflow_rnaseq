@@ -193,6 +193,20 @@ RUN cd /opt && \
     mv fastp.${fastp_version} /usr/local/bin/fastp && \
     chmod 775 /usr/local/bin/fastp
 
+# Arriba
+ENV arriba_version=2.4.0
+RUN cd /opt && \
+    arriba_url="https://github.com/suhrig/arriba/releases/download/v${arriba_version}/arriba_v${arriba_version}.tar.gz" && \
+    wget --no-check-certificate ${arriba_url} -O arriba_v${arriba_version}.tar.gz && \
+    tar -xzvf arriba_v${arriba_version}.tar.gz && \
+    rm arriba_v2.4.0.tar.gz && \
+    cd arriba_v${arriba_version} && \
+    make && \
+    chmod 775 arriba && \
+    mv arriba /usr/local/bin/ && \
+    cd .. && \
+    rm -r arriba_v2.4.0
+
 
 # # bamsync ## from original pipeline
 # COPY bamsync /opt/bamsync
