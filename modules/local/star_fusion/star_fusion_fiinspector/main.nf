@@ -33,7 +33,6 @@ process STAR_FUSION_FIINSPECTOR {
 
     """
     set -eou pipefail
-    # INDEX=`find -L ./ -name "*.grp" | sed 's/\\.grp\$//'`
     REFERENCE=`find -L ./ -name "ctat_genome_lib_build_dir" -type d`
 
     # list all files in the container
@@ -60,9 +59,7 @@ process STAR_FUSION_FIINSPECTOR {
     [ -f star-fusion.fusion_predictions.abridged.coding_effect.tsv ] && mv star-fusion.fusion_predictions.abridged.coding_effect.tsv ${prefix}.starfusion.abridged.coding_effect.tsv
     [ -f FusionInspector.log ] && mv FusionInspector.log ${prefix}.FusionInspector.log
 
-    [ ! -d FusionInspector-validate ] && mkdir ${prefix}_FusionInspector-validate && \\
-    touch ./${prefix}_FusionInspector-validate/finspector.FusionInspector.fusions.tsv && \\
-    touch ./${prefix}_FusionInspector-validate/finspector.FusionInspector.fusions.abridged.tsv
+    [ ! -d FusionInspector-validate ] && mkdir ${prefix}_FusionInspector-validate && touch ./${prefix}_FusionInspector-validate/finspector.FusionInspector.fusions.tsv && touch ./${prefix}_FusionInspector-validate/finspector.FusionInspector.fusions.abridged.tsv
 
     [ -d FusionInspector-validate ] && mv FusionInspector-validate ${prefix}_FusionInspector-validate
 

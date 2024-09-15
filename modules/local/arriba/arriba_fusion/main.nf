@@ -59,7 +59,7 @@ process ARRIBA_FUSION {
     --chimScoreSeparation 1 \\
     --chimSegmentReadGapMax 3 \\
     --chimMultimapNmax 50 \\
-    --readFilesIn ${reads[0]} ${reads[1]} \| arriba \\
+    --readFilesIn ${reads[0]} ${reads[1]} | arriba \\
     -x /dev/stdin \\
     -o ${meta.id}.fusions.tsv \\
     -O ${meta.id}.fusions.discarded.tsv \\

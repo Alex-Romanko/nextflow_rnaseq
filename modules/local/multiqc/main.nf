@@ -2,14 +2,16 @@ process MULTIQC {
     label 'process_single'
     publishDir params.multiqc, mode:'copy'
     tag 'MultiQC'
+    scratch '$TMPDIR'
+    stageOutMode 'move'
 
     input:
-    path ('fastqc/*')
-    path ('star/*')
-    // path ('fastp/*')
-    // path ('umi_extract/*')
-    path ('rsem/*')
-    path 'config'
+    path ("fastqc/*")
+    path ("star/*")
+    // path ("fastp/*")
+    // path ("umi_extract/*")
+    path ("rsem/*")
+    path "config"
 
     output:
     path "*multiqc_report.html", emit: report
