@@ -1,0 +1,9 @@
+title: "Nextflow RNAseq project"
+subtitle: "A pipeline for fusion detection and read counts quantification"
+
+report_header_info:
+    - Contact E-mail: 'romanko.aleksandr.a@gmail.com'
+    - Application Type: 'RNA-seq'
+    - Project Type: 'Nextflow RNAseq project'
+
+custom_logo_title: 'Mol-Onco'

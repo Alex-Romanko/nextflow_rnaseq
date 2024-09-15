@@ -8,7 +8,9 @@ process FASTQC {
     tuple val(meta), path(reads)
 
     output:
-    path "fastqc_${meta.id}_logs"
+    // path "fastqc_${meta.id}_logs", emit: logs
+    path "${meta.id}*.zip" , optional:true, emit: zip
+    path "${meta.id}*.html", optional:true, emit: html
 
     script:
 
@@ -19,5 +21,6 @@ process FASTQC {
     """
     mkdir fastqc_${meta.id}_logs
     fastqc -o fastqc_${meta.id}_logs -f fastq -q ${reads} --threads $task.cpus --memory $fastqc_memory
+    mv fastqc_${meta.id}_logs/* .
     """
 }

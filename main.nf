@@ -22,6 +22,7 @@ params.fastq_dir = null
 params.outdir = null
 params.storeDir = "$projectDir"
 params.multiqc = null
+params.multiqc_conf = "$projectDir" + "/conf/multiqc_config.yaml"
 
 params.transcriptome_file = null
 params.gtf_file = null
@@ -56,6 +57,8 @@ log.info """\
    # outdir          : ${params.outdir}
    # working dir     : ${workflow.workDir}
    # store dir       : ${params.storeDir}
+   # MQC dir         : ${params.multiqc}
+   # MQC config      : ${params.multiqc_conf}
    -------------------
    # UMI             : ${params.UMI}
    # RSEM expression : ${params.rsem}

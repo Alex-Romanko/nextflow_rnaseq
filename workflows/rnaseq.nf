@@ -7,6 +7,8 @@
 //
 // MODULE: Loaded from modules/local/
 //
+include { MULTIQC } from '../modules/local/multiqc/'
+
 include { MERGE_FQ } from '../modules/local/merge_fasstq'
 include { FASTQC } from '../modules/local/fastqc'
 include { TRIMGALORE } from '../modules/local/trimgalore'
@@ -87,6 +89,11 @@ def getLibraryId( prefix ){
 }
 
 workflow RNASEQ {
+
+    Channel
+    .fromPath ( params.multiqc_conf )
+    .set { ch_multiqc_conf }
+
 
     // Channel
     // 	.fromFilePairs(params.fastq_dir + '/*R{1,2}*.fastq.gz', flat: true)
@@ -357,6 +364,21 @@ workflow RNASEQ {
 
 	RSEM_MERGE_EXPRESSIONS (genes_ch, isoforms_ch)
     }
+
+
+    ch_fastqc_multiqc = FASTQC.out.zip.collect().ifEmpty([])
+    ch_star_multiqc = STAR_ALIGN.out.log_final.collect{it[1]}.ifEmpty([])
+    // ch_fastp_mltiqc = FASTP_TRIM_X.out.json.collect{it[1]}.ifEmpty([])
+    // ch_umi_extract_multiqc = UMI_EXTRACT.out.log.collect{it[1]}.ifEmpty([])
+    ch_rsem_multiqc = RSEM_CALCULATEEXPRESSION.out.stat.collect{it[1]}.ifEmpty([])
+
+    MULTIQC (
+	ch_fastqc_multiqc,
+	ch_star_multiqc,
+	ch_rsem_multiqc,
+	ch_multiqc_conf
+    )
+
 
     // ctat_source_ch = channel.fromPath( params.ctat_source, type: 'dir' )
 
