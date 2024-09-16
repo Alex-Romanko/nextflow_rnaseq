@@ -107,7 +107,7 @@ function run_nextflow {
     PROFILE="docker" # set the default profile to docker if no arguments are present
     PROFILE="${profile:-$PROFILE}"
 
-    MQC_CONF="MQC_CONF:-${project_path}/conf/multiqc_config.yaml"
+    MQC_CONF="${MQC_CONF:-${project_path}/conf/multiqc_config.yaml}"
 
     UMI="false"
     UMI="${umi:-$UMI}"
@@ -130,6 +130,7 @@ function run_nextflow {
 	     --ctat_build "$BUILD_CTAT" \
 	     --outdir "$RESULTS" \
 	     --multiqc "$MULTIQC" \
+	     --multiqc_conf "$MQC_CONF" \
 	     --fastq_dir "$FASTQ" \
 	     --transcriptome_file "$GENOME" \
 	     --gtf_file "$GENOME_GTF" \
