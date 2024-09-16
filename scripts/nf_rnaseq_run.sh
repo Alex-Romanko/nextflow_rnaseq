@@ -107,6 +107,8 @@ function run_nextflow {
     PROFILE="docker" # set the default profile to docker if no arguments are present
     PROFILE="${profile:-$PROFILE}"
 
+    MQC_CONF="MQC_CONF:-${project_path}/conf/multiqc_config.yaml"
+
     UMI="false"
     UMI="${umi:-$UMI}"
     # ctat_build
