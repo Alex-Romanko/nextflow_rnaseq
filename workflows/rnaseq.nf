@@ -41,6 +41,8 @@ include { STAR_FUSION_FIINSPECTOR } from '../modules/local/star_fusion/star_fusi
 include { STAR_FUSION_MERGE_TSV as MERGE_STAR_PREDICTIONS } from '../modules/local/star_fusion/merge_tsv'
 include { STAR_FUSION_MERGE_TSV as MERGE_STAR_ABRIDGED } from '../modules/local/star_fusion/merge_tsv'
 include { STAR_FUSION_MERGE_TSV as MERGE_STAR_CODING_EFF } from '../modules/local/star_fusion/merge_tsv'
+include { STAR_FUSION_MERGE_TSV as MERGE_FIINSPECTOR_PRED } from '../modules/local/star_fusion/merge_tsv'
+include { STAR_FUSION_MERGE_TSV as MERGE_FIINSPECTOR_ABR } from '../modules/local/star_fusion/merge_tsv'
 
 include { RSEM_PREPAREREFERENCE } from '../modules/local/rsem/rsem_preparereference'
 include { RSEM_CALCULATEEXPRESSION } from '../modules/local/rsem/rsem_calculateexpression'
@@ -332,6 +334,37 @@ workflow RNASEQ {
 
 
     STAR_FUSION_FIINSPECTOR (ch_star_fusion_reads_juntions, ch_ctat_lib)
+
+
+    ch_fi_fusions_fn = channel.value( 'ALL.FusionInspector.fusions' )
+    STAR_FUSION_FIINSPECTOR
+	.out
+	.fi_fusions
+	.map{
+	    sapmle, file -> file
+	}
+	.collect(flat: true, sort: true)
+	.set{ ch_fi_fusions }
+
+    ch_fi_fusions_abr_fn = channel.value( 'ALL.FusionInspector.fusions.abridged' )
+    STAR_FUSION_FIINSPECTOR
+	.out
+	.fi_fusions_abridged
+	.map{
+	    sapmle, file -> file
+	}
+	.collect(flat: true, sort: true)
+	.set{ ch_fi_fusions_abr }
+
+
+
+
+
+    MERGE_FIINSPECTOR_PRED ( ch_fi_fusions, ch_fi_fusions_fn )
+    MERGE_FIINSPECTOR_ABR ( ch_fi_fusions_abr, ch_fi_fusions_abr_fn )
+
+
+
 
     // end standart wf
 

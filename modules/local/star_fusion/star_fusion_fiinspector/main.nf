@@ -19,6 +19,8 @@ process STAR_FUSION_FIINSPECTOR {
     tuple val(meta), path("*FusionInspector-inspect"), optional: true, emit: fi_inspect
     tuple val(meta), path("*FusionInspector-validate"), optional: true, emit: fi_validate
     tuple val(meta), path("*.FusionInspector.log")     , optional: true   , emit: fi_log
+    tuple val(meta), path("*.FusionInspector.fusions.tsv")     , optional: true   , emit: fi_fusions
+    tuple val(meta), path("*.FusionInspector.fusions.abridged.tsv")     , optional: true   , emit: fi_fusions_abridged
 
 
 // FusionInspector.log
@@ -62,7 +64,8 @@ process STAR_FUSION_FIINSPECTOR {
     [ ! -d FusionInspector-validate ] && mkdir ${prefix}_FusionInspector-validate && touch ./${prefix}_FusionInspector-validate/finspector.FusionInspector.fusions.tsv && touch ./${prefix}_FusionInspector-validate/finspector.FusionInspector.fusions.abridged.tsv
 
     [ -d FusionInspector-validate ] && mv FusionInspector-validate ${prefix}_FusionInspector-validate
-
+    cp ${prefix}_FusionInspector-validate/finspector.FusionInspector.fusions.tsv ./${prefix}.FusionInspector.fusions.tsv
+    cp ${prefix}_FusionInspector-validate/finspector.FusionInspector.fusions.abridged.tsv ./${prefix}.FusionInspector.fusions.abridged.tsv
     """
 
 }
