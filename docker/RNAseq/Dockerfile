@@ -175,6 +175,9 @@ RUN pip3 install pyBigWig
 # UMI-TOOLS
 RUN pip3 install umi_tools
 
+# MultiQc
+RUN pip3 install multiqc
+
 # SeqKit
 ENV seqkit_version=2.8.2
 RUN cd /opt && \
