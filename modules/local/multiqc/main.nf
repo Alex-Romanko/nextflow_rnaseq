@@ -8,7 +8,7 @@ process MULTIQC {
     input:
     path ("fastqc/*")
     path ("star/*")
-    // path ("fastp/*")
+    path ("fastp/*")
     // path ("umi_extract/*")
     path ("rsem/*")
     path("config")
@@ -23,7 +23,7 @@ process MULTIQC {
     // def extra_config = extra_multiqc_config ? "--config $extra_multiqc_config" : ''
     """
     multiqc \\
-        -o multiqc_report.html \\
+        -o multiqc_report \\
         --config $config \\
         .
     """

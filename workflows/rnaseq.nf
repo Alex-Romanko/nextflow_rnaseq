@@ -15,6 +15,7 @@ include { TRIMGALORE } from '../modules/local/trimgalore'
 include { SEQKIT_PAIR_FQ } from '../modules/local/seqkit_pair'
 include { FASTP as FASTP_TRIM_X } from '../modules/local/fastp'
 include { FASTP as FASTP_TRIM_CLIP } from '../modules/local/fastp'
+include { FASTP as FASTP_TRIM_AD } from '../modules/local/fastp'
 
 
 include { UMITOOLS_EXTRACT as UMI_EXTRACT } from '../modules/local/umi_tools/umi_extract'
@@ -173,7 +174,11 @@ workflow RNASEQ {
 
 
 
-    TRIMGALORE ( SEQKIT_PAIR_FQ.out.reads )
+    // TRIMGALORE ( SEQKIT_PAIR_FQ.out.reads )
+
+
+    FASTP_TRIM_AD ( SEQKIT_PAIR_FQ.out.reads )
+
 
     // TRIMGALORE
     // 	.out
@@ -192,7 +197,7 @@ workflow RNASEQ {
 
     if ( params.UMI ) {
 
-	UMI_EXTRACT( TRIMGALORE.out.reads )
+	UMI_EXTRACT( FASTP_TRIM_AD.out.reads )
 
 	FASTP_TRIM_CLIP ( UMI_EXTRACT.out.reads )
 
@@ -260,10 +265,10 @@ workflow RNASEQ {
     } else {
 
 
-	FASTQC( TRIMGALORE.out.reads )
+	FASTQC( FASTP_TRIM_AD.out.reads )
 
 
-	ch_reads_for_star = TRIMGALORE.out.reads
+	ch_reads_for_star = FASTP_TRIM_AD.out.reads
 
 	STAR_ALIGN ( ch_reads_for_star, star_ind_ch )
 	SAMTOOLS_INDEX ( STAR_ALIGN.out.bam_sorted )
@@ -401,13 +406,14 @@ workflow RNASEQ {
 
     ch_fastqc_multiqc = FASTQC.out.zip.collect().ifEmpty([])
     ch_star_multiqc = STAR_ALIGN.out.log_final.collect{it[1]}.ifEmpty([])
-    // ch_fastp_mltiqc = FASTP_TRIM_X.out.json.collect{it[1]}.ifEmpty([])
+    ch_fastp_mltiqc = FASTP_TRIM_AD.out.json.collect{it[1]}.ifEmpty([])
     // ch_umi_extract_multiqc = UMI_EXTRACT.out.log.collect{it[1]}.ifEmpty([])
     ch_rsem_multiqc = RSEM_CALCULATEEXPRESSION.out.stat.collect{it[1]}.ifEmpty([])
 
     MULTIQC (
 	ch_fastqc_multiqc,
 	ch_star_multiqc,
+	ch_fastp_mltiqc,
 	ch_rsem_multiqc,
 	ch_multiqc_conf
     )
@@ -422,8 +428,6 @@ workflow RNASEQ {
 
     // TODO: add samtools index for transcriptome alignments
     // samtools NO_COOR reads not in a single block at the end
-
-    // TODO: add multiqc
 }
 
 
