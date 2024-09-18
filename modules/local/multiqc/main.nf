@@ -14,7 +14,7 @@ process MULTIQC {
     path("config")
 
     output:
-    path "*multiqc_report.html", emit: report
+    path "*multiqc_report", emit: report
     path "*_data"              , optional:true, emit: data
     path "*_plots"             , optional:true, emit: plots
 
